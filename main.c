@@ -87,7 +87,7 @@ void generatePlayers(int n, int initEnergy) //generate a new player
      for (i=0;i<n;i++)
      {
          //input name
-         printf("Input player %i's name:", i); //¨úE©ø¡í ©ö¢ç¡¾¢¬ 
+         printf("Input player %i's name:", i); //??? ???? 
          scanf("%s", cur_player[i].name);
          fflush(stdin);
          
@@ -139,7 +139,7 @@ void actionNode(int player)
             //grade generation
             gradePtr = smmObj_genObject(name, smmObjType_grade, 0, smmObj_getNodeCredit( boardPtr ), 0, ??);
             smmdb_addTail(LISTNO_OFFSET_GRADE + player, gradePtr);
-            
+    //add tails must be added
             break;
             
         default:
@@ -213,7 +213,7 @@ int main(int argc, const char * argv[]) {
     }
     //printf("(%s)", smmObj_getTypeName(SMMNODE_TYPE_LECTURE));
     
-    #if 0
+
     //2. food card config 
     if ((fp = fopen(FOODFILEPATH,"r")) == NULL)
     {
@@ -221,10 +221,14 @@ int main(int argc, const char * argv[]) {
         return -1;
     }
     
-    printf("\n\nReading food card component......\n");
-    while () //read a food parameter set
+printf("\n\nReading food card component......\n");
+    while ( fscanf(fp, "%s %i", name, &energy) == 2 ) //read a food parameter set
     {
         //store the parameter set
+        void *foodObj = smmObj_genObject(name, smmObjType_card, 0, 0, energy, 0);
+        smmdb_addTail(LISTNO_FOODCARD, foodObj);
+
+        food_nr++;
     }
     fclose(fp);
     printf("Total number of food cards : %i\n", food_nr);
@@ -239,14 +243,15 @@ int main(int argc, const char * argv[]) {
     }
     
     printf("\n\nReading festival card component......\n");
-    while () //read a festival card string
+    while ( fscanf(fp, "%s", name) == 1 ) //read a festival card string
     {
         //store the parameter set
+        void *festObj = smmObj_genObject(name, smmObjType_card, 0, 0, 0, 0);
+        smmdb_addTail(LISTNO_FESTCARD,festObj);
+		festival_nr++;
     }
     fclose(fp);
     printf("Total number of festival cards : %i\n", festival_nr);
-    #endif
-    
     
     //2. Player configuration ---------------------------------------------------------------------------------
     

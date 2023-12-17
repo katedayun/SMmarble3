@@ -30,19 +30,6 @@ char* smmObj_getTypeName(int type)
 }
 
 
-
-typedef enum smmObjGrade {
-    smmObjGrade_Ap = 0,
-    smmObjGrade_A0,
-    smmObjGrade_Am,
-    smmObjGrade_Bp,
-    smmObjGrade_B0,
-    smmObjGrade_Bm,
-    smmObjGrade_Cp,
-    smmObjGrade_C0,
-    smmObjGrade_Cm
-} smmObjGrade_e;
-
 //1. 구조체 형식 정의
 typedef struct smmObject {
        char name[MAX_CHARNAME];
