@@ -11,6 +11,8 @@
 #include "smm_database.h"
 #include "smm_common.h"
 
+
+
 #define BOARDFILEPATH "marbleBoardConfig.txt"
 #define FOODFILEPATH "marbleFoodConfig.txt"
 #define FESTFILEPATH "marbleFestivalConfig.txt"
@@ -128,20 +130,73 @@ void actionNode(int player)
     char *name = smmObj_getNodeName( boardPtr );
     void *gradePtr;
     
+    int goto_lab=0;
+    int food_nr;
+    void *foodPtr;
+    int fest_nr;
+    void *festPtr;
     switch(type)
     {
+    	
         //case lecture:
         case SMMNODE_TYPE_LECTURE:
-             if 
-            cur_player[player].accumCredit += smmObj_getNodeCredit( boardPtr );
-            cur_player[player].energy -= smmObj_getNodeEnergy( boardPtr );
+            if (cur_player[player].energy>=smmObj_getNodeEnergy(boardPtr)){
+			 
+            	cur_player[player].accumCredit += smmObj_getNodeCredit( boardPtr );
+            	cur_player[player].energy -= smmObj_getNodeEnergy( boardPtr );
             
-            //grade generation
-            gradePtr = smmObj_genObject(name, smmObjType_grade, 0, smmObj_getNodeCredit( boardPtr ), 0, ??);
-            smmdb_addTail(LISTNO_OFFSET_GRADE + player, gradePtr);
-    //add tails must be added
+            	//grade generation
+            	gradePtr = smmObj_genObject(name, smmObjType_grade, 0, smmObj_getNodeCredit( boardPtr ), 0, rand()%9);
+            	smmdb_addTail(LISTNO_OFFSET_GRADE + player, gradePtr);
+        	}
+    		//add tails must be added
             break;
-            
+        
+	
+		case SMMNODE_TYPE_RESTAURANT:
+			cur_player[player].energy += smmObj_getNodeEnergy(boardPtr);
+			
+		case SMMNODE_TYPE_GOTOLAB:
+			goto_lab=1;
+			
+		case SMMNODE_TYPE_LABORATORY:
+			if(!goto_lab)break;
+				
+			break;
+			
+		case SMMNODE_TYPE_HOME:            
+			cur_player[player].energy += smmObj_getNodeEnergy(boardPtr);
+			
+	            
+		case SMMNODE_TYPE_FOODCHANCE:
+			food_nr=smmdb_len(LISTNO_FOODCARD);
+			foodPtr=smmdb_getData(LISTNO_FOODCARD,rand()%food_nr);
+			cur_player[player].energy += smmObj_getNodeEnergy(boardPtr);
+			break;
+			
+		case SMMNODE_TYPE_FESTIVAL:
+			fest_nr=smmdb_len(LISTNO_FESTCARD);
+			
+			festPtr=smmdb_getData(LISTNO_FESTCARD,rand()%fest_nr);
+			//printf("%s\n",festPtr->name);
+			break;
+
+		// New case for restaurant
+   /* case SMMNODE_TYPE_RESTAURANT:
+        // Adjust player's energy based on the restaurant node
+        cur_player[player].energy += smmObj_getNodeEnergy(boardPtr);
+        
+        // Check for energy overflow or underflow if necessary
+        // Example: cur_player[player].energy = max(0, cur_player[player].energy);
+
+        // Optionally, you might want to log or print this event
+        printf("%s visited %s and now has %d energy.\n", 
+               cur_player[player].name, 
+               smmObj_getNodeName(boardPtr), 
+               cur_player[player].energy);
+        break;
+        */
+		
         default:
             break;
     }
@@ -155,7 +210,7 @@ void goForward(int player, int step)
      
      printf("%s go to node %i (name: %s)\n", 
                 cur_player[player].name, cur_player[player].position,
-                smmObj_getNodeName(boardPtr);
+                smmObj_getNodeName(boardPtr));
 }
 
 
