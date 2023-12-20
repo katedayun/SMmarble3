@@ -179,24 +179,9 @@ void actionNode(int player)
 			
 			festPtr=smmdb_getData(LISTNO_FESTCARD,rand()%fest_nr);
 			//printf("%s\n",festPtr->name);
+			//card selecting w/ random code 
 			break;
 
-		// New case for restaurant
-   /* case SMMNODE_TYPE_RESTAURANT:
-        // Adjust player's energy based on the restaurant node
-        cur_player[player].energy += smmObj_getNodeEnergy(boardPtr);
-        
-        // Check for energy overflow or underflow if necessary
-        // Example: cur_player[player].energy = max(0, cur_player[player].energy);
-
-        // Optionally, you might want to log or print this event
-        printf("%s visited %s and now has %d energy.\n", 
-               cur_player[player].name, 
-               smmObj_getNodeName(boardPtr), 
-               cur_player[player].energy);
-        break;
-        */
-		
         default:
             break;
     }
@@ -273,6 +258,7 @@ int main(int argc, const char * argv[]) {
     if ((fp = fopen(FOODFILEPATH,"r")) == NULL)
     {
         printf("[ERROR] failed to open %s. This file should be in the same directory of SMMarble.exe.\n", FOODFILEPATH);
+        getchar();
         return -1;
     }
     
@@ -287,8 +273,18 @@ printf("\n\nReading food card component......\n");
     }
     fclose(fp);
     printf("Total number of food cards : %i\n", food_nr);
-    
-    
+
+
+    for (i = 0;i<food_nr;i++)
+    {
+        void *foodObj = smmdb_getData(LISTNO_FOODCARD, i);
+        
+        printf("node %i : %s, energy %i\n", 
+                     i, smmObj_getNodeName(foodObj), 
+                     smmObj_getNodeEnergy(foodObj));
+    }
+   //add reading and printing all food card also 
+
     
     //3. festival card config 
     if ((fp = fopen(FESTFILEPATH,"r")) == NULL)
