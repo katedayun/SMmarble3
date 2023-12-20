@@ -11,21 +11,15 @@
 #include "smm_database.h"
 #include "smm_common.h"
 
-
-
 #define BOARDFILEPATH "marbleBoardConfig.txt"
 #define FOODFILEPATH "marbleFoodConfig.txt"
 #define FESTFILEPATH "marbleFestivalConfig.txt"
-
-
 
 //board configuration parameters
 static int board_nr;
 static int food_nr;
 static int festival_nr;
-
 static int player_nr;
-
 
 typedef struct player {
         int energy;
@@ -36,7 +30,7 @@ typedef struct player {
 } player_t;
 
 static player_t *cur_player;
-//static player_t cur_player[MAX_PLAYER];
+
 
 #if 0
 static int player_energy[MAX_PLAYER];
@@ -241,7 +235,6 @@ int main(int argc, const char * argv[]) {
     fclose(fp);
     printf("Total number of board nodes : %i\n", board_nr);
     
-    
     for (i = 0;i<board_nr;i++)
     {
         void *boardObj = smmdb_getData(LISTNO_NODE, i);
@@ -251,8 +244,6 @@ int main(int argc, const char * argv[]) {
                      smmObj_getNodeType(boardObj), smmObj_getTypeName(smmObj_getNodeType(boardObj)),
                      smmObj_getNodeCredit(boardObj), smmObj_getNodeEnergy(boardObj));
     }
-    //printf("(%s)", smmObj_getTypeName(SMMNODE_TYPE_LECTURE));
-    
 
     //2. food card config 
     if ((fp = fopen(FOODFILEPATH,"r")) == NULL)
@@ -262,7 +253,7 @@ int main(int argc, const char * argv[]) {
         return -1;
     }
     
-printf("\n\nReading food card component......\n");
+	printf("\n\nReading food card component......\n");
     while ( fscanf(fp, "%s %i", name, &energy) == 2 ) //read a food parameter set
     {
         //store the parameter set
@@ -314,6 +305,7 @@ printf("\n\nReading food card component......\n");
                      );
     }
    //add reading and printing fest cards
+   
     //2. Player configuration ---------------------------------------------------------------------------------
     
     do
@@ -327,11 +319,7 @@ printf("\n\nReading food card component......\n");
     
     cur_player = (player_t*)malloc(player_nr*sizeof(player_t));
     generatePlayers(player_nr, initEnergy);
-    
-    
-    
-    
-    
+   
     //3. SM Marble game starts ---------------------------------------------------------------------------------
     while (1) //is anybody graduated?
     {

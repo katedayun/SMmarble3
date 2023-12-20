@@ -36,31 +36,6 @@ typedef enum smmObjGrade {
     smmObjGrade_Cm
 } smmObjGrade_e;
 
-/*typedef enum smm 
-    lecture,
-    restaurant,
-    laboratory,
-    home,
-    experiment,
-    foodChance,
-    festival
-*/
-
-
-/* grade :
-    A+,
-    A0,
-    A-,
-    B+,
-    B0,
-    B-,
-    C+,
-    C0,
-    C-
-*/
-
-
-
 //object generation
 void* smmObj_genObject(char* name, smmObjType_e objType, int type, int credit, int energy, smmObjGrade_e grade);
 
