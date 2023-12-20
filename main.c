@@ -290,6 +290,7 @@ printf("\n\nReading food card component......\n");
     if ((fp = fopen(FESTFILEPATH,"r")) == NULL)
     {
         printf("[ERROR] failed to open %s. This file should be in the same directory of SMMarble.exe.\n", FESTFILEPATH);
+        getchar();
         return -1;
     }
     
@@ -304,6 +305,15 @@ printf("\n\nReading food card component......\n");
     fclose(fp);
     printf("Total number of festival cards : %i\n", festival_nr);
     
+    for (i = 0;i<festival_nr;i++)
+    {
+        void *festObj = smmdb_getData(LISTNO_FESTCARD, i);
+        
+        printf("node %i : %s \n", 
+                     i, smmObj_getNodeName(festObj)
+                     );
+    }
+   //add reading and printing fest cards
     //2. Player configuration ---------------------------------------------------------------------------------
     
     do
